@@ -16,4 +16,17 @@ docker run -it -d \
   --network web \
   --expose 80 \
   --expose 8000 \
-   ubuntu
+   emasanga/essoko:latest
+
+
+
+Local Essoko
+============================================
+
+docker run -it -d \
+  --name essoko \
+  --network web \
+  -v ./source_code:/var/www/html \
+  -p 80:80 \
+  -p 8000:8000 \
+   emasanga/essoko:latest

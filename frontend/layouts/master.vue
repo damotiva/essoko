@@ -1,155 +1,125 @@
 <template>
-    
-    <div class="horizontal-menu">
-      
-      <client-only>
+  <div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-lg fixed-top">
+      <div class="container">
+        <!-- Logo Section -->
+        <a class="navbar-brand d-flex align-items-center" @click="scrollToTop">
+          <div class="w-8 h-8 bg-earth-green rounded-tr-xl rounded-bl-xl flex items-center justify-center text-white font-bold text-lg">
+            E
+          </div>
+          <span class="font-display text-2xl font-bold text-earth-green tracking-wide ml-2">ESSOKO</span>
+        </a>
+        <!-- Toggler for Mobile Menu -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <!-- Left: Main Nav Links -->
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link text-earth-green" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-earth-green" href="#mission">Our Mission</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-earth-green" href="#journey">The Journey</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-earth-green" href="#impact">Impact</a>
+            </li>
+          </ul>
 
-         <nav class="navbar top-navbar col-12 p-0 border-btm">
-           <div class="container-fluid top-navbar-root">
-             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                 <span class="color-black font-20 d-block font-weight-light text-center">
-                 <NuxtLink to="/" class="color-black font-size-20">
-                   <strong>Admission Works</strong>
-                 </NuxtLink> 
-                 </span>
-             </div>
-             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-               <ul class="navbar-nav mr-lg-2">
-                 <li class="nav-item nav-search d-none d-lg-block">
-                   <div class="input-group">
-                     <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
- 
-                     </div>
-                   </div>
-                 </li>
-               </ul>
-               <ul class="navbar-nav navbar-nav-right">
-                 <li class="nav-item nav-profile dropdown">
-                   <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                     <div class="nav-profile-img">
-                       <img src="../assets/images/hospital.jpg" alt="image">
-                     </div>
-                     <div class="nav-profile-text">
-                       <p class="text-black font-weight-semibold m-0">User : {{ user }}</p>
-                     </div>
- 
-                     &nbsp;&nbsp;&nbsp;&nbsp;
- 
-                     <button class="btn btn-success" @click="goToMicroServicesDashboard()">Micro-Services</button>
- 
-                     &nbsp;&nbsp;
- 
-                     <button class="btn btn-danger" @click="logout()"><i class="fa fa-share" aria-hidden="true"></i>&nbsp;Logout</button>
-                     
-                   </a>
-                 </li>
-               </ul>
-             </div>
-           </div>
-         </nav>
-     
-     <Nuxt />
+          <!-- Right: Auth Links -->
+          <ul class="navbar-nav auth-nav">
+            <li v-if="user" class="nav-item">
+              <span class="nav-link text-earth-green">{{ user.name }}</span>
+            </li>
+            <li v-if="user" class="nav-item">
+              <button class="btn btn-link nav-link text-red-600" @click="logout">Log Out</button>
+            </li>
+            <li v-if="!user" class="nav-item">
+              <button class="btn btn-link nav-link text-earth-green" @click="openModal('login')">Log In</button>
+            </li>
+            <li v-if="!user" class="nav-item">
+              <button class="btn btn-success nav-link text-white" @click="openModal('register')">Get Started</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
-     </client-only>
- 
-     </div>
- 
- </template>
- 
- 
- <script>
-   import axios from 'axios'
- 
-   export default {
-     name: 'LayoutMaster',
-   
-     computed: {
+    <!-- Main Content -->
+    <div class="container-fluid">
+      <br /><br /><br /><br />
+      <Nuxt />
+    </div>
+  </div>
+</template>
 
-          user() {
-            return this.$store.state.auth_user_data?.auth_user || ''
-          },
+<script>
+export default {
+  name: 'LayoutMaster',
+  computed: {
+    user() {
+      return this.$store.state.auth_user_data?.auth_user || ''
+    },
+    authToken() {
+      return this.$store.state.auth_user_data?.auth_token || ''
+    },
+    userId() {
+      return this.$store.state.auth_user_data?.user_id || ''
+    },
+  },
+  methods: {
+    openModal(type) {
+      this.$emit('openModal', type)
+    },
+    logout() {
+      this.$store.commit('logout')
+      this.$router.push('/login')
+    },
+    scrollToTop() {
+      window.scrollTo(0, 0)
+    },
+  },
+}
+</script>
 
-          authToken() {
-            return this.$store.state.auth_user_data?.auth_token || ''
-          },
+<style scoped>
+.bg-earth-green {
+  background-color: #2D6A4F;
+}
+.text-earth-green {
+  color: #2D6A4F;
+}
+.text-red-600 {
+  color: #EF4444;
+}
+.font-display {
+  font-family: 'Playfair Display', serif;
+}
+.font-body {
+  font-family: 'Inter', sans-serif;
+}
+.navbar-nav .nav-item {
+  margin-right: 1rem;
+}
 
-          userId() {
-            return this.$store.state.auth_user_data?.user_id || ''
-          }
-      },
+/* Force auth nav to the right — overrides any Tailwind conflicts */
+.auth-nav {
+  margin-left: auto !important;
+}
 
-      methods: {
-          // Go To Micro Services Dashboard
-          goToMicroServicesDashboard() {
-            
-            //Go to Micro-Services Panel
-            window.location.assign(this.$store.state.core_ui + "/prepare/welcome?username=" + this.user + "&user_id=" + this.userId + "&token=" + this.authToken , "_blank")
-          },
-
-         async logout() {
-           //Send Logout Request
-           await axios({
-               method: 'POST',
-               url: this.$store.state.entry_api + '/logout',
-               headers: {
-                   "Content-Type": "application/json",
-                   "Auth-User": this.$store.state.auth_user,
-                   "Auth-Token": this.$store.state.auth_token
-               }
-           }).then((response) => {
-               var jsonData = JSON.parse(JSON.stringify(response.data));
- 
-               if (jsonData['status'] == true) {
-                 //Show Notification
-                 this.$Notice.success({
-                     title: 'Logout Success',
-                     desc: 'You have been Logged Out Successfully'
-                 });
- 
-                 //Clear Auth Data
-                 this.$store.commit('clear_auth_data')
-           
-                 //Go to Core UI
-                 window.location.assign(this.$store.state.core_ui)
-               }else {
-                 //Show Error on Logout
-                 this.$Notice.error({
-                     title: 'Logout Failure',
-                     desc: 'Failed to Logout. Please Try Again...'
-                 });
-               }
-               
-           });
-   
-         }
-     }
- 
-   }
- </script>
- 
- 
- <style scoped>
-   .top-navbar-root {
-     padding: 10px;
-   }
- 
-   .color-black {
-     color: black;
-     text-decoration: none;
-   }
- 
-   .logout-fav {
-     color: red;
-     margin-left: 10px;
-     font-size: 20px;
-   }
- 
-   .border-btm {
-     border-bottom: 2px solid black;
-   }
- 
-   .none-padding {
-     padding: none;
-   }
- 
- </style>
+@media (max-width: 992px) {
+  .navbar-nav {
+    margin-top: 10px;
+  }
+  /* On mobile, auth nav stacks naturally — remove the forced margin */
+  .auth-nav {
+    margin-left: 0 !important;
+  }
+}
+</style>
