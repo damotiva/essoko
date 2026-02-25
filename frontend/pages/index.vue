@@ -3,14 +3,16 @@
     <!-- Hero Section -->
     <header class="hero bg-light text-center py-5">
       <div class="container">
-        <h1 class="display-4">Welcome to ESSOKO</h1>
+        <h1 class="display-3">Welcome to ESSOKO</h1>
+        <br/>
         <p class="lead">Connecting farmers, markets, and families with transparency and sustainability.</p>
-        <a href="#journey" class="btn btn-primary">Learn More</a>
+        <br/>
+        <a class="btn btn-primary">Preview Demo</a>
       </div>
     </header>
 
     <!-- Sample Farmer Products Section -->
-    <section id="products" class="py-5 bg-light">
+    <section id="products" class="py-1 bg-light">
       <div class="container">
         <h2 class="display-4 text-center">Farmer Products</h2>
         <p class="lead text-center">Explore a selection of farmer products available on our platform.</p>

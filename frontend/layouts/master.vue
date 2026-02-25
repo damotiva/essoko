@@ -8,7 +8,7 @@
           <div class="w-8 h-8 bg-earth-green rounded-tr-xl rounded-bl-xl flex items-center justify-center text-white font-bold text-lg">
             E
           </div>
-          <span class="font-display text-2xl font-bold text-earth-green tracking-wide ml-2">ESSOKO</span>
+          <span class="font-display text-2xl font-bold text-earth-green tracking-wide ml-2">SSOKO</span>
         </a>
         <!-- Toggler for Mobile Menu -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,15 +21,19 @@
             <li class="nav-item">
               <a class="nav-link text-earth-green" href="/">Home</a>
             </li>
+
             <li class="nav-item">
-              <a class="nav-link text-earth-green" href="#mission">Our Mission</a>
+              <a class="nav-link text-earth-green">Products</a>
             </li>
+
             <li class="nav-item">
-              <a class="nav-link text-earth-green" href="#journey">The Journey</a>
+              <a class="nav-link text-earth-green">Mobile Apps</a>
             </li>
+
             <li class="nav-item">
-              <a class="nav-link text-earth-green" href="#impact">Impact</a>
+              <a class="nav-link text-earth-green">Customer Support</a>
             </li>
+
           </ul>
 
           <!-- Right: Auth Links -->
@@ -53,7 +57,7 @@
 
     <!-- Main Content -->
     <div class="container-fluid">
-      <br /><br /><br /><br />
+      <br /><br /><br />
       <Nuxt />
     </div>
   </div>
