@@ -1,6 +1,7 @@
 import os, json
 import environ
 from pathlib import Path
+from datetime import timedelta
 from corsheaders.defaults import default_headers
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -15,25 +16,6 @@ DB_PORT = int(env("DB_PORT"))
 DB_USER = env("DB_USER")
 DB_PASS = env("DB_PASS")
 DB_NAME = env("DB_NAME")
-DB_CONN_STRING = env("DB_CONN_STRING")
-REDIS_CACHE_LOCATION = env("REDIS_CACHE_LOCATION")
-
-# Load Micro-Services Config
-CONFIG_PATH = "/home/sys/config/config.json"
-with open(CONFIG_PATH) as f:
-    CONFIG = json.load(f)
-
-LAN_IP = CONFIG.get("lan_ip")
-
-# Spaces Directory
-ACCESS_KEY_ID = env('ACCESS_KEY_ID')
-SECRET_ACCESS_KEY = env('SECRET_ACCESS_KEY')
-STORAGE_BUCKET_NAME = env('STORAGE_BUCKET_NAME')
-S3_ENDPOINT_URL = env('S3_ENDPOINT_URL')
-S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-S3_LOCATION = env('S3_LOCATION')
 
 current_country = 'Tanzania'
 
@@ -51,8 +33,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django.contrib.staticfiles',
     'drf_yasg',
-    'admission',
-    'sslserver',
+    'essoko',
     'redis_search_django',
 ]
 
@@ -68,20 +49,11 @@ MIDDLEWARE = [
     'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
+AUTH_USER_MODEL = 'essoko.User'
+
 CACHE_MIDDLEWARE_ALIAS = "default"
 CACHE_MIDDLEWARE_SECONDS = 600  
-CACHE_MIDDLEWARE_KEY_PREFIX = "admission"
-
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": REDIS_CACHE_LOCATION, 
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
-        }
-    }
-}
+CACHE_MIDDLEWARE_KEY_PREFIX = "essoko"
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -91,9 +63,33 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 
 ROOT_URLCONF = 'backend.urls'
 
+# ── Django REST Framework ──────────────────
 REST_FRAMEWORK = {
+    
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
 }
+
+# ── JWT Settings ───────────────────────────
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME':  timedelta(hours=24),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+    'ROTATE_REFRESH_TOKENS':  True,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://essoko.com",
+]
 
 TEMPLATES = [
     {
@@ -138,6 +134,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+MEDIA_URL  = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Africa/Nairobi'

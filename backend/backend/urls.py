@@ -42,4 +42,5 @@ urlpatterns = [
 
     # API v1 routes (Essoko backend)
     path("api/v1/", include("essoko.urls")),
+
 ]

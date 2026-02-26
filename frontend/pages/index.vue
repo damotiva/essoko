@@ -21,7 +21,7 @@
 
         <!-- Product Cards -->
         <div class="row">
-          <div class="col-md-4" v-for="product in products" :key="product.id">
+          <div class="col-md-4" v-for="product in products" :key="product.id" >
             <div class="card mb-4 shadow-sm">
               <img :src="product.image" style="width: 400px; height: 300px;" class="card-img-top" alt="product image">
               <div class="card-body">
@@ -46,6 +46,7 @@ import axios from "axios"
 export default {
   name: 'IndexPage',
   layout: 'master',
+  auth: false,
   data() {
     return {
       

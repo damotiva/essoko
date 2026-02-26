@@ -1,10 +1,8 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Essoko',
-    htmlAttrs: {
-      lang: 'en'
-    },
+    title: 'ESSOKO — Earth · Supply · Soko',
+    
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -35,8 +33,42 @@ export default {
     ]
   },
 
+  auth: {
+    strategies: {
+      local: {
+        scheme: 'refresh',
+        token: {
+          property: 'access',
+          maxAge: 86400,               // 24h in seconds
+          type: 'Bearer',
+        },
+        refreshToken: {
+          property: 'refresh',
+          data: 'refresh',
+          maxAge: 2592000,             // 30 days
+        },
+        user: {
+          property: false,             // User returned directly
+          autoFetch: true,
+        },
+        endpoints: {
+          login:   { url: '/auth/login/',        method: 'post' },
+          refresh: { url: '/auth/token/refresh/', method: 'post' },
+          logout:  { url: '/auth/logout/',       method: 'post' },
+          user:    { url: '/auth/me/',            method: 'get' },
+        },
+      },
+    },
+    redirect: {
+      login:    '/login',
+      logout:   '/',
+      callback: '/login',
+      home:     '/',
+    },
+  },
+
   router: {
-    // middleware: ['auth']
+    middleware: ['auth'],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -66,7 +98,15 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
   ],
+
+  axios: {
+    // baseURL: 'http://127.0.0.1:8000/api/v1'
+    
+    baseURL: 'https://api.essoko.com/api/v1'  
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
